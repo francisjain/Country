@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/d49c9b669c.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <style>
+    body{
+        background-image: url(./Image/cont.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+    }
+.aa{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+</style>
+   
+</head>
+<body >
+    <h1 class="text-center text-white p-5">Search Country Details</h1>
+    
+    
+    <div class="container  rounded-3" >
+                
+        
+                <div class="row">
+                    <div class="col-lg-4 col-md-4"></div>
+                    <div class="input-group mb-3 col-lg-4 col-md-4">
+        <div class= " opacity-50 " id="bgimg" style="position: absolute; width: 98%;"></div>
+
+                        <input type="text" class="form-control mt-4 rounded-3 border-light text-info  ms-4 placeholder-wave bg-transparent" placeholder="Country Name" style="max-width: 93%;" id="cname" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-light text-info mt-4 me-4"   type="button" id="button-addon2" onclick="getData()"><i class="fas fa-search-location"></i></button>
+                      </div>
+                  <div class="col-lg-4 col-md-4"></div>
+                </div>
+                <div class="row  mt-4">
+                    <div class="col-lg-4 col-md-4"></div>
+                    <div class="col-lg-4  col-md-4 aa " id="result"> </div>
+                    <div class="col-lg-4 col-md-4 "></div>
+                </div>
+           
+            
+    </div>
+
+    
+</body>
+<script>
+    function getData(){
+        
+        fetch(`https://restcountries.com/v2/name/${cname.value}?fullText=true`).then(res=>res.json()).then(data=>displayDetail(data))
+    }
+    function displayDetail(data){
+        
+        console.log(data);
+        let Countryname=data[0].name
+        let pop=data[0].population
+        let cap=data[0].capital
+        let cur_name=data[0].currencies[0].name
+        let cur_name_sym=data[0].currencies[0].symbol
+        let flag=data[0].flag
+            let html_data=`
+            <div class="card text-dark bg-light mb-3 ml-5 rounded-3 shadow-lg" style="max-width: 18rem;  margin-left:20px">
+  <img src="${flag}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title"><span class="text-primary">${Countryname}</span></h5>
+  </div>
+  <ul class="list-group list-group-flush ">
+    <li class="list-group-item">Population : <span class="text-primary">${pop}</span></li>
+    <li class="list-group-item">Capital    : <span class="text-primary">${cap}</span></li>
+    <li class="list-group-item">currencies : <span class="text-primary">${cur_name}</span></li>
+    <li class="list-group-item">currencies Symbol :<span class="text-primary"> ${cur_name_sym}</span></li>
+  </ul>
+</div>`
+document.querySelector("#result").innerHTML=html_data;
+document.querySelector("#bgimg").innerHTML=`<img src="${data[0].flag}" class="card-img-top" alt="..." >`;
+
+    }
+    
+</script>
+
+</html>
+
